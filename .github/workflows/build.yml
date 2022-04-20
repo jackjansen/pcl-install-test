@@ -1,0 +1,38 @@
+name: CMake Build Matrix
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install PCL (Windows)
+      shell: pwsh
+      run: |
+        $env:Path
+        $pcldir="$((Get-Item ..).FullName)\pcl"
+        $pclinstdir="$pcldir"
+        mkdir $pcldir
+        (New-Object System.Net.WebClient).DownloadFile("https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.12.1/PCL-1.12.1-AllInOne-msvc2019-win64.exe","$pcldir\pcl-installer.exe");
+        cd $pcldir
+        .\pcl-installer.exe /S /D=$pclinstdir
+        Add-Content $env:GITHUB_PATH "$pclinstdir"
+        Add-Content $env:GITHUB_ENV "PCL_DIR=$pclinstdir"
+              
+    - name: See what is there
+      shell: bash
+      run: |
+        du ..
+
+    - name: build
+      uses: ashutoshvarma/action-cmake-build@master
+      with:
+        build-dir: ${{ github.workspace }}/build
+        configure-options: -DPCL_ROOT=${{ env.PCL_DIR }}
+        build-type: Release
+        run-test: true
+
