@@ -19,7 +19,7 @@ jobs:
         mkdir $pcldir
         (New-Object System.Net.WebClient).DownloadFile("https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.12.1/PCL-1.12.1-AllInOne-msvc2019-win64.exe","$pcldir\pcl-installer.exe");
         cd $pcldir
-        .\pcl-installer.exe /S
+        Start-Process -FilePath .\pcl-installer.exe -ArgumentList "/S" -Wait
         Add-Content $env:GITHUB_PATH "$pclinstdir"
         Add-Content $env:GITHUB_ENV "PCL_DIR=$pclinstdir"
               
