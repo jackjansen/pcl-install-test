@@ -21,7 +21,7 @@ jobs:
       run: |
         $pcldir="$((Get-Item ..).FullName)\pcl"
         $pclinstdir="$pcldir"
-        .\pcl-installer.exe /S /D=$pclinstdir"
+        .\pcl-installer.exe /S /D=$pclinstdir
         Add-Content $env:GITHUB_PATH "$pclinstdir"
         Add-Content $env:GITHUB_ENV "PCL_DIR=$pclinstdir"
     - name: Wait for 2 minutes (Windows)
