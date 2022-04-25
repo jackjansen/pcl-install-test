@@ -22,10 +22,8 @@ jobs:
         $pcldir="$((Get-Item ..).FullName)\pcl"
         $pclinstdir="C:/Program Files/PCL 1.11.1"
         cd $pcldir
-        .\pcl-installer.exe /S /D=$pclinstdir
+        .\pcl-installer.exe /S
         Start-Sleep -s 120
-        Add-Content $env:GITHUB_PATH "$pclinstdir"
-        Add-Content $env:GITHUB_ENV "PCL_DIR=$pclinstdir"
         dir
     - name: See what is there
       if: always()
@@ -38,7 +36,6 @@ jobs:
       uses: ashutoshvarma/action-cmake-build@master
       with:
         build-dir: ${{ github.workspace }}/build
-        configure-options: -DPCL_ROOT=${{ env.PCL_DIR }}
         build-type: Release
         run-test: true
 
