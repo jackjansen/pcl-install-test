@@ -13,13 +13,12 @@ jobs:
     - name: Install PCL (Windows)
       shell: pwsh
       run: |
-        $env:Path
         $pcldir="$((Get-Item ..).FullName)\pcl"
         $pclinstdir="$pcldir"
         mkdir $pcldir
         (New-Object System.Net.WebClient).DownloadFile("https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.12.1/PCL-1.12.1-AllInOne-msvc2019-win64.exe","$pcldir\pcl-installer.exe");
         cd $pcldir
-        Start-Process -FilePath .\pcl-installer.exe -ArgumentList "/S","/D=$pclinstdir" -Wait -NoNewWindow
+        Start-Process -Passthru -FilePath .\pcl-installer.exe -ArgumentList "/S","/D=$pclinstdir" | Wait-Process
         Add-Content $env:GITHUB_PATH "$pclinstdir"
         Add-Content $env:GITHUB_ENV "PCL_DIR=$pclinstdir"
               
