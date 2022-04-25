@@ -15,12 +15,12 @@ jobs:
       run: |
         $pcldir="$((Get-Item ..).FullName)\pcl"
         mkdir $pcldir
-        (New-Object System.Net.WebClient).DownloadFile("https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.11.1/PCL-1.11.1-AllInOne-msvc2019-win64.exe","$pcldir\pcl-installer.exe");
+        (New-Object System.Net.WebClient).DownloadFile("https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.12.1/PCL-1.12.1-AllInOne-msvc2019-win64.exe","$pcldir\pcl-installer.exe");
     - name: Install PCL (Windows)
       shell: pwsh
       run: |
         $pcldir="$((Get-Item ..).FullName)\pcl"
-        $pclinstdir="C:/Program Files/PCL 1.11.1"
+        $pclinstdir="C:/Program Files/PCL 1.12.1"
         cd $pcldir
         .\pcl-installer.exe /S
         Start-Sleep -s 120
