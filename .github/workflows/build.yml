@@ -22,8 +22,7 @@ jobs:
         $pcldir="$((Get-Item ..).FullName)\pcl"
         $pclinstdir="C:/Program Files/PCL 1.12.1"
         cd $pcldir
-        .\pcl-installer.exe /S
-        Start-Sleep -s 120
+        Start-Process -FilePath .\pcl-installer.exe -ArgumentList "/S" -Wait
         dir
     - name: See what is there
       if: always()
