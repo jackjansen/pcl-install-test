@@ -20,7 +20,7 @@ jobs:
       shell: pwsh
       run: |
         $pcldir="$((Get-Item ..).FullName)\pcl"
-        $pclinstdir="$pcldir"
+        $pclinstdir="C:/Program Files/PCL 1.11.1"
         cd $pcldir
         .\pcl-installer.exe /S /D=$pclinstdir
         Start-Sleep -s 120
