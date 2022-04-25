@@ -14,12 +14,11 @@ jobs:
       shell: pwsh
       run: |
         $pcldir="$((Get-Item ..).FullName)\pcl"
-        $pclinstdir="C:/Program Files/PCL 1.12.1"
+        $pclinstdir="$pcldir\pcl"
         mkdir $pcldir
         (New-Object System.Net.WebClient).DownloadFile("https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.12.1/PCL-1.12.1-AllInOne-msvc2019-win64.exe","$pcldir\pcl-installer.exe");
         cd $pcldir
-        icacls "C:\Windows\Temp" /q /c /t /grant Users:F /T
-        Start-Process -FilePath .\pcl-installer.exe -ArgumentList "/S" -Wait -Verb RunAs
+        Start-Process -FilePath .\pcl-installer.exe -ArgumentList "/S","/D=$pclinstdir" -Wait
         Add-Content $env:GITHUB_PATH "$pclinstdir"
         Add-Content $env:GITHUB_ENV "PCL_DIR=$pclinstdir"
               
@@ -27,6 +26,7 @@ jobs:
       shell: bash
       run: |
         ls -l "/c/Program Files"
+        ls -l "../pcl"
 
     - name: build
       uses: ashutoshvarma/action-cmake-build@master
