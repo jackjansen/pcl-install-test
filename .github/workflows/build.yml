@@ -10,22 +10,30 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Download PCL (Windows)
+      shell: pwsh
+      run: |
+        $pcldir="$((Get-Item ..).FullName)\pcl"
+        mkdir $pcldir
+        (New-Object System.Net.WebClient).DownloadFile("https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.12.1/PCL-1.12.1-AllInOne-msvc2019-win64.exe","$pcldir\pcl-installer.exe");
     - name: Install PCL (Windows)
       shell: pwsh
       run: |
         $pcldir="$((Get-Item ..).FullName)\pcl"
         $pclinstdir="$pcldir"
-        mkdir $pcldir
-        (New-Object System.Net.WebClient).DownloadFile("https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.12.1/PCL-1.12.1-AllInOne-msvc2019-win64.exe","$pcldir\pcl-installer.exe");
-        cd $pcldir
-        Start-Process -Passthru -FilePath .\pcl-installer.exe -ArgumentList "/S","/D=$pclinstdir" | Wait-Process
+        .\pcl-installer.exe /S /D=$pclinstdir"
         Add-Content $env:GITHUB_PATH "$pclinstdir"
         Add-Content $env:GITHUB_ENV "PCL_DIR=$pclinstdir"
+    - name: Wait for 2 minutes (Windows)
+      shell: pwsh
+      run: |
+        Start-Sleep -s 120
               
     - name: See what is there
       shell: bash
       run: |
         du ..
+        ls -l "/c/Program Files"
 
     - name: build
       uses: ashutoshvarma/action-cmake-build@master
