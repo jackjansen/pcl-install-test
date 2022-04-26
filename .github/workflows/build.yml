@@ -20,10 +20,9 @@ jobs:
       shell: pwsh
       run: |
         $pcldir="$((Get-Item ..).FullName)\pcl"
-        $pclinstdir="C:/Program Files/PCL 1.12.1"
-        cd $pcldir
+        $pclinst="$pcldir\pcl-installer.exe"
         $proc = New-Object System.Diagnostics.Process -Property @{
-            StartInfo = New-Object System.Diagnostics.ProcessStartInfo(".\pcl-installer.exe", "/S")
+            StartInfo = New-Object System.Diagnostics.ProcessStartInfo("$pclinst", "/S")
         }
 
         $proc.Start()
